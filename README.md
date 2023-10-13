@@ -3,8 +3,7 @@
 # Web Scraping with Python and asyncio
 
 ## Overview
-
-This Python script demonstrates how to perform web scraping using asyncio, aiohttp, BeautifulSoup, and pandas. It scrapes data from the Umico.az website, specifically the "Noutbuklar" (laptops) category, and extracts information about discounted laptops.
+"This Python script demonstrates how to perform web scraping using asyncio, aiohttp, BeautifulSoup, and pandas. It scrapes data from the Umico.az website, specifically the "Noutbuklar" (laptops) category, and extracts information about discounted laptops."
 
 The data extracted includes:
 
