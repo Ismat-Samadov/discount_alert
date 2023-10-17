@@ -136,7 +136,7 @@ async def main():
     current_date = datetime.now().strftime("%d.%m.%Y")
     subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
 
-    TO_EMAIL = "ismetsemedli@mail.ru,Ismat.Samadov@kapitalbank.az,ismetsemedov@gmail.com"
+    TO_EMAIL = "ismetsemedli@mail.ru,ismetsemedov@gmail.com"
 
     #abdiyev-mubariz@mail.ru,ravanhuseyn@gmail.com,suleymanov.1994@outlook.com,
     #allahverdiyev.tural@hotmail.com,kamalkhalilov7@gmail.com,shukurovvusal@gmail.com
