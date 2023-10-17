@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
-        uses: actions/checkout@v4.2.0 # Specify the version of the checkout action compatible with Node.js version 16
+        uses: actions/checkout@v4 # Specify the version of the checkout action compatible with Node.js version 16
 
       - name: setup python
         uses: actions/setup-python@v4
