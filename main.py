@@ -91,18 +91,18 @@ async def main():
     tasks = []
    
     headers = {
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
-            'Dnt': '1',
-            'Origin': 'https://umico.az',
-            'Referer': 'https://umico.az/',
-            'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
-            'Sec-Ch-Ua-Mobile': '?0',
-            'Sec-Ch-Ua-Platform': '"Windows"',
-            'Sec-Fetch-Dest': 'empty',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Site': 'cross-site',
+            # 'Accept': '*/*',
+            # 'Accept-Encoding': 'gzip, deflate, br',
+            # 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
+            # 'Dnt': '1',
+            # 'Origin': 'https://umico.az',
+            # 'Referer': 'https://umico.az/',
+            # 'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
+            # 'Sec-Ch-Ua-Mobile': '?0',
+            # 'Sec-Ch-Ua-Platform': '"Windows"',
+            # 'Sec-Fetch-Dest': 'empty',
+            # 'Sec-Fetch-Mode': 'cors',
+            # 'Sec-Fetch-Site': 'cross-site',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
         }
     async with aiohttp.ClientSession(trust_env=True,headers=headers) as session:
