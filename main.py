@@ -127,7 +127,7 @@ async def main():
     
     global df
     df = pd.DataFrame(data)
-    # print(df)
+    print(df)
     table_html = df.to_html(index=False)
 
     # Create an email message
