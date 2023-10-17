@@ -136,8 +136,10 @@ async def main():
     current_date = datetime.now().strftime("%d.%m.%Y")
     subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
 
-    TO_EMAIL = "ismetsemedli@mail.ru,Ismat.Samadov@kapitalbank.az,ismetsemedov@gmail.com,abdiyev-mubariz@mail.ru,ravanhuseyn@gmail.com,suleymanov.1994@outlook.com"
-    #allahverdiyev.tural@hotmail.com,kamalkhalilov7@gmail.com,shukurovvusal@gmail.com,
+    TO_EMAIL = "ismetsemedli@mail.ru,Ismat.Samadov@kapitalbank.az,ismetsemedov@gmail.com"
+
+    #abdiyev-mubariz@mail.ru,ravanhuseyn@gmail.com,suleymanov.1994@outlook.com,
+    #allahverdiyev.tural@hotmail.com,kamalkhalilov7@gmail.com,shukurovvusal@gmail.com
     recipient_emails = TO_EMAIL.split(',')
 
     for recipient_email in recipient_emails:
