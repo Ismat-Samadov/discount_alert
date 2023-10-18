@@ -25,7 +25,9 @@ async def fetch_page(session, page_number):
         except aiohttp.client_exceptions.ServerDisconnectedError:
             retries += 1
             print("Retrying request...")
-    return None  # Handle if all retries fail
+        await asyncio.sleep(5)  # sleep for 5 seconds
+
+    return None  
 
 
 async def scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs):
@@ -106,7 +108,7 @@ async def main():
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
         }
     async with aiohttp.ClientSession(trust_env=True,headers=headers) as session:
-        for page_number in range(1, 110):
+        for page_number in range(1, 5):
             task = asyncio.create_task(fetch_page(session, page_number))
             tasks.append(task)
 
