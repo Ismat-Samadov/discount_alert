@@ -132,22 +132,15 @@ async def main():
     print(df)
     table_html = df.to_html(index=False)
     # Create an email message
-    MY_EMAIL = os.environ["EMAIL_FROM"]
-    MY_PASSWORD = os.environ["EMAIL_PASSWORD"]
-    TO_EMAIL = os.environ["EMAIL_TO"]
-    EMAIL_PORT = os.environ["EMAIL_PORT"]
-    EMAIL_SERVER = os.environ["EMAIL_SERVER"]
-
+    MY_EMAIL = "ismetsemedov@gmail.com"
+    MY_PASSWORD = "lmjareknmmweotsp"
+    TO_EMAIL = "ismetsemedov@gmail.com,ismetsemedli@mail.ru"
     current_date = datetime.now().strftime("%d.%m.%Y")
-
     subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
-
-
     recipient_emails = TO_EMAIL.split(',')
-
     for recipient_email in recipient_emails:
         try:
-            connection = smtplib.SMTP(EMAIL_SERVER, EMAIL_PORT)
+            connection = smtplib.SMTP("smtp.gmail.com", 587)
             connection.starttls()
             connection.login(MY_EMAIL, MY_PASSWORD)
             msg = MIMEText(f'<html><body>{table_html}</body></html>', 'html', 'utf-8')
@@ -160,7 +153,6 @@ async def main():
             print(f"Email sent successfully to {recipient_email}.")
         except Exception as e:
             print(f"An error occurred while sending the email to {recipient_email}: {str(e)}")
-
 
 if __name__ == '__main__':
     asyncio.run(main())
