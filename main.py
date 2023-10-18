@@ -131,11 +131,13 @@ async def main():
     df = pd.DataFrame(data)
     print(df)
     table_html = df.to_html(index=False)
-
+    print(os.environ)
     # Create an email message
     MY_EMAIL = os.environ["EMAIL_USERNAME"]
     MY_PASSWORD = os.environ["EMAIL_PASSWORD"]
     TO_EMAIL = os.environ["EMAIL_TO"]
+    EMAIL_PORT = os.environ["EMAIL_PORT"]
+
     current_date = datetime.now().strftime("%d.%m.%Y")
 
     subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
@@ -145,7 +147,7 @@ async def main():
 
     for recipient_email in recipient_emails:
         try:
-            connection = smtplib.SMTP("smtp.gmail.com", 587)
+            connection = smtplib.SMTP(EMAIL_SERVER, EMAIL_PORT)
             connection.starttls()
             connection.login(MY_EMAIL, MY_PASSWORD)
             msg = MIMEText(f'<html><body>{table_html}</body></html>', 'html', 'utf-8')
