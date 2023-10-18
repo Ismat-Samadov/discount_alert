@@ -29,6 +29,7 @@ async def fetch_page(session, page_number):
 
     return None  
 
+
 async def scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs):
     if page_content is None:
         return
@@ -90,32 +91,23 @@ async def main():
     product_hrefs = []
 
     tasks = []
-
-    # Define your proxy settings
-    proxy_url = "socks5://proxy.zenrows.com:1080"  # Replace with your actual proxy URL
+   
     headers = {
-        'Accept': '*/*',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
-        'Dnt': '1',
-        'Origin': 'https://umico.az',
-        'Referer': 'https://umico.az/',
-        'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
-        'Sec-Ch-Ua-Mobile': '?0',
-        'Sec-Ch-Ua-Platform': '"Windows"',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'cross-site',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
-    }
-    
-    connector = aiohttp.TCPConnector(ssl=False)
-    
-    async with aiohttp.ClientSession(
-        trust_env=True, 
-        headers=headers, 
-        connector=connector,  # Use the TCPConnector without SSL
-    ) as session:
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
+            'Dnt': '1',
+            'Origin': 'https://umico.az',
+            'Referer': 'https://umico.az/',
+            'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
+            'Sec-Ch-Ua-Mobile': '?0',
+            'Sec-Ch-Ua-Platform': '"Windows"',
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'cross-site',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
+        }
+    async with aiohttp.ClientSession(trust_env=True,headers=headers) as session:
         for page_number in range(1, 5):
             task = asyncio.create_task(fetch_page(session, page_number))
             tasks.append(task)
@@ -139,7 +131,6 @@ async def main():
     df = pd.DataFrame(data)
     print(df)
     table_html = df.to_html(index=False)
-    
     # Create an email message
     MY_EMAIL = "ismetsemedov@gmail.com"
     MY_PASSWORD = "lmjareknmmweotsp"
