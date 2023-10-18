@@ -23,7 +23,7 @@ jobs:
           pip install -r requirements.txt
           
       - name: Execute py script
-        run: python main.py
+        run: python asynchronous.py
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
