@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - name: checkout repo content
         uses: actions/checkout@v4 # Specify the version of the checkout action compatible with Node.js version 16
