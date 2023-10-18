@@ -1,57 +1,46 @@
-name: Send Discounts Email
+name: Run web scraper
 
-on:
+on: 
   schedule:
-    - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (adjust the schedule as needed)
+    - cron: '* * * * *' # Runs every other hour
 
 jobs:
-  send_email:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.x
-
-      - name: Install dependencies
-        run: pip install smtplib pandas
-
-      - name: Execute Python script
-        env:
-          EMAIL_ADDR: ${{ secrets.EMAIL_ADDR }}
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          python-version: '3.10'
+          
+      - name: Install python packages
         run: |
-          python - <<EOF
-          import smtplib
-          from email.mime.text import MIMEText
-          from datetime import datetime
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           
-          # Create an email message
-          MY_EMAIL = os.environ["EMAIL_ADDR"]
-          MY_PASSWORD = os.environ["EMAIL_PASS"]
-          current_date = datetime.now().strftime("%d.%m.%Y")
-          subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
-          
-          TO_EMAIL = "ismetsemedli@mail.ru,ismetsemedov@gmail.com"
-          recipient_emails = TO_EMAIL.split(',')
-          
-          for recipient_email in recipient_emails:
-              try:
-                  connection = smtplib.SMTP("smtp.gmail.com", 587)
-                  connection.starttls()
-                  connection.login(MY_EMAIL, MY_PASSWORD)
-                  msg = MIMEText(f'<html><body>{table_html}</body></html>', 'html', 'utf-8')
-                  msg['Subject'] = subject
-                  msg['From'] = MY_EMAIL
-                  msg['To'] = recipient_email
-                  msg_str = msg.as_string()
-                  connection.sendmail(from_addr=MY_EMAIL, to_addrs=recipient_email, msg=msg_str)
-                  connection.quit()
-                  print(f"Email sent successfully to {recipient_email}.")
-              except Exception as e:
-                  print(f"An error occurred while sending the email to {recipient_email}: {str(e)}")
-          EOF
+      - name: Execute py script
+        run: python main.py
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update courses.md
+        id: auto-commit-action
+
+      - name: Send email
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_ADDR}}
+          password: ${{secrets.MAIL_PASS}}
+          subject: 'HOT DISCOUNTS'
+          to: ismetsemedov@gmail.com
+          from: Discounts
+          html_body: file://mark.md
+          convert_markdown: true
