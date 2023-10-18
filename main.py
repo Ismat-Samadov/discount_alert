@@ -131,12 +131,12 @@ async def main():
     df = pd.DataFrame(data)
     print(df)
     table_html = df.to_html(index=False)
-    print(os.environ)
     # Create an email message
     MY_EMAIL = os.environ["EMAIL_USERNAME"]
     MY_PASSWORD = os.environ["EMAIL_PASSWORD"]
     TO_EMAIL = os.environ["EMAIL_TO"]
     EMAIL_PORT = os.environ["EMAIL_PORT"]
+    EMAIL_SERVER = os.environ["EMAIL_SERVER"]
 
     current_date = datetime.now().strftime("%d.%m.%Y")
 
