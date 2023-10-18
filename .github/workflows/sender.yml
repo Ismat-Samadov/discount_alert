@@ -25,7 +25,7 @@ jobs:
         run: python main.py
 
       - name: Send Email Notification
-        uses: dawidd6/action-send-mail@v1
+        uses: dawidd6/action-send-mail@v3.9.0
         with:
           server_address: ${{ secrets.EMAIL_SERVER }} # Your SMTP server address
           server_port: ${{ secrets.EMAIL_PORT }} # Your SMTP server port
