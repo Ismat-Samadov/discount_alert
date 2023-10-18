@@ -132,7 +132,7 @@ async def main():
     print(df)
     table_html = df.to_html(index=False)
     # Create an email message
-    MY_EMAIL = os.environ["EMAIL_USERNAME"]
+    MY_EMAIL = os.environ["EMAIL_FROM"]
     MY_PASSWORD = os.environ["EMAIL_PASSWORD"]
     TO_EMAIL = os.environ["EMAIL_TO"]
     EMAIL_PORT = os.environ["EMAIL_PORT"]
