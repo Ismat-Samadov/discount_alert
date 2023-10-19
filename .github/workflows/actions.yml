@@ -1,30 +1,30 @@
-name: run main.py
+# name: run main.py
 
-on:
-  schedule:
-    - cron: '* * * * *'
+# on:
+#   schedule:
+#     - cron: '* * * * *'
  
-env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+# env:
+#   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-jobs:
-  build:
-    runs-on: windows-latest
-    permissions:
-      contents: write
-    steps:
-      - name: checkout repo content
-        uses: actions/checkout@v4 
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#     permissions:
+#       contents: write
+#     steps:
+#       - name: checkout repo content
+#         uses: actions/checkout@v4 
 
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+#       - name: setup python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
 
-      - name: install python packages
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+#       - name: install python packages
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
 
-      - name: execute py script
-        run: python main.py
+#       - name: execute py script
+#         run: python main.py
