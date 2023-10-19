@@ -3,6 +3,9 @@ name: run main.py
 on:
   schedule:
     - cron: '* * * * *'
+ 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
   build:
