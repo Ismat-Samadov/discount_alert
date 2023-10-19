@@ -155,15 +155,39 @@ async def main():
         except Exception as e:
             print(f"An error occurred while sending the email to {recipient_email}: {str(e)}")
 
-s = sched.scheduler(time.time, time.sleep)
 
-def run_and_reschedule(sc):
+## for every three minute
+# s = sched.scheduler(time.time, time.sleep)
+# def run_and_reschedule(sc):
+#     asyncio.run(main())
+#     # Schedule the function to run again in 3 minutes (180 seconds)
+#     s.enter(180, 1, run_and_reschedule, (sc,))
+# if __name__ == '__main__':
+#     # Schedule the initial run
+#     s.enter(0, 1, run_and_reschedule, (s,))
+#     # Run the scheduler
+#     s.run()
+
+
+## Schedule the job to run at 10:00 AM every day
+# def job():
+#     asyncio.run(main())
+
+# if __name__ == '__main__':
+#     # Schedule the job to run at 10:00 AM every day
+#     schedule.every().day.at("10:00").do(job)
+
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+
+# # Schedule the job to run every 10 hours
+def job():
     asyncio.run(main())
-    # Schedule the function to run again in 3 minutes (180 seconds)
-    s.enter(180, 1, run_and_reschedule, (sc,))
 
 if __name__ == '__main__':
-    # Schedule the initial run
-    s.enter(0, 1, run_and_reschedule, (s,))
-    # Run the scheduler
-    s.run()
+    schedule.every(10).hours.do(job)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
