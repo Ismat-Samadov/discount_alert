@@ -19,9 +19,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'  
-
-      # No need to manually activate the virtual environment, as the `actions/setup-python@v4` action will do this automatically.
+          python-version: '3.10'
 
       - name: install python packages
         run: |
