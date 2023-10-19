@@ -11,7 +11,7 @@ from email.mime.text import MIMEText
 import io
 
 async def fetch_page(session, page_number):
-    max_retries = 3  # Define the maximum number of retries
+    max_retries = 3
     retries = 0
     while retries < max_retries:
         try:
@@ -25,11 +25,18 @@ async def fetch_page(session, page_number):
         except aiohttp.client_exceptions.ServerDisconnectedError:
             retries += 1
             print("Retrying request...")
-        await asyncio.sleep(5)  # sleep for 5 seconds
+        await asyncio.sleep(5)
 
     return None  
 
-async def scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs):
+async def scrape_page(page_content, 
+                      discount_percentages, 
+                      discounted_prices, 
+                      real_prices, 
+                      monthly_payments, 
+                      loan_durations, 
+                      product_titles, 
+                      product_hrefs):
     if page_content is None:
         return
 
@@ -91,8 +98,7 @@ async def main():
 
     tasks = []
 
-    # Define your proxy settings
-    proxy_url = "socks5://proxy.zenrows.com:1080"  # Replace with your actual proxy URL
+    proxy_url = "socks5://proxy-server.scraperapi.com:8001"  
     headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -114,7 +120,7 @@ async def main():
     async with aiohttp.ClientSession(
         trust_env=True, 
         headers=headers, 
-        connector=connector,  # Use the TCPConnector without SSL
+        connector=connector,  
     ) as session:
         for page_number in range(1, 5):
             task = asyncio.create_task(fetch_page(session, page_number))
@@ -123,7 +129,14 @@ async def main():
         page_contents = await asyncio.gather(*tasks)
 
         for page_content in page_contents:
-            await scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs)
+            await scrape_page(page_content, 
+                              discount_percentages, 
+                              discounted_prices, 
+                              real_prices, 
+                              monthly_payments, 
+                              loan_durations, 
+                              product_titles, 
+                              product_hrefs)
 
     data = {
         'product_name': product_titles,
