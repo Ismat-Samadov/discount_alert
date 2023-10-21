@@ -1,73 +1,71 @@
 ---
 
-# Web Scraping with Python and asyncio
+# Web Scraping and Email Notification Script
 
-## Overview
-"This Python script demonstrates how to perform web scraping using asyncio, aiohttp, BeautifulSoup, and pandas. It scrapes data from the Umico.az website, specifically the "Noutbuklar" (laptops) category, and extracts information about discounted laptops."
+This Python script is designed to scrape data from a website and send an email with the scraped data as an HTML table. It is specifically tailored for scraping product discount information from [umico.az](https://umico.az/categories/16-noutbuklar) and notifying recipients via email.
 
-The data extracted includes:
+## Features
 
-- Discount percentage
-- Discounted price
-- Real price
-- Monthly payment (if available)
-- Loan duration (in months, if available)
-- Product title
-- Product URL (link)
+- Asynchronously scrapes product data from multiple pages on the website.
+- Constructs a Pandas DataFrame from the scraped data.
+- Sends an email containing the data as an HTML table to specified recipients.
+- Schedules the scraping job to run daily at a specific time.
 
-## Dependencies
+## Prerequisites
 
-To run this script, you'll need the following dependencies:
+Before using this script, make sure you have the following dependencies installed:
 
-- Python 3.7+
-- aiohttp
-- BeautifulSoup4 (bs4)
-- pandas
-- asyncio
+- Python 3.x
+- Required Python packages (install using `pip`):
+    - aiohttp==3.8.5
+    - beautifulsoup4==4.12.2
+    - pandas==2.1.1
+    - schedule==1.2.1
+    - requests==2.31.0
+    - brotli==1.1.0
 
-You can install these dependencies using pip:
+You can install these packages by running:
 
-```
-pip install aiohttp beautifulsoup4 pandas
-```
-
-## How to Run
-
-1. Clone or download this repository to your local machine.
-
-2. Open a terminal or command prompt and navigate to the directory where the script is located.
-
-3. Run the script with the following command:
-
-```
-python asynchronous.py
+```bash
+pip install -r requirements.txt
 ```
 
-4. The script will start scraping data from Umico.az for discounted laptops in the specified category.
+## Configuration
 
-5. The extracted data will be saved in an Excel file named "df.xlsx" in the same directory as the script.
+Before running the script, you need to configure several parameters in the script itself:
 
-## Script Structure
+- `MY_EMAIL`: Your Gmail email address from which the notification emails will be sent.
+- `MY_PASSWORD`: Your Gmail account password. Be cautious with this information and consider using an app-specific password.
+- `TO_EMAIL`: A comma-separated list of recipient email addresses to whom the notifications will be sent.
+- `current_date`: The date format for the subject line of the email.
+- `schedule.every().day.at("09:00").do(job)`: Schedule the scraping job to run at a specific time. You can adjust the time according to your needs.
 
-- The `fetch_page` function sends GET requests to the Umico.az website and retrieves the HTML content of a specific page.
+## Running the Script
 
-- The `scrape_page` function parses the HTML content and extracts the relevant data, including discount percentage, prices, loan conditions, product titles, and URLs. This function is executed asynchronously for each page.
+You can run the script using the following command:
 
-- The `main` function orchestrates the scraping process. It creates multiple tasks to fetch and scrape data from multiple pages concurrently using asyncio.
+```bash
+python main.py
+```
 
-- Extracted data is stored in lists, and a DataFrame is created using pandas for structured data storage.
+The script will scrape the data and send notifications to the specified email addresses at the scheduled time.
 
-- The resulting DataFrame is displayed in the terminal and saved to an Excel file.
+## Customization
 
-## Data Extracted
+You can customize this script for different websites and data types by modifying the following parts:
 
-The script extracts information about discounted laptops, including the discount percentage, discounted price, real price, monthly payment, loan duration, product title, and product URL.
+- The URL in `fetch_page(session, page_number)` to match the website you want to scrape.
+- The scraping logic in `scrape_page(page_content, ...)` to extract the relevant data.
+- The DataFrame creation to match the structure of your scraped data.
 
-## Disclaimer
+## Important Notes
 
-Web scraping may be subject to website terms of service and legal regulations. Be sure to review and comply with the terms and policies of the website you are scraping. This script is intended for educational and demonstration purposes.
+- Be cautious with your Gmail email and password. Use app-specific passwords if possible.
+- Consider using a dedicated Gmail account for sending notifications.
+- Make sure to comply with website terms of service and scraping policies.
 
 ## License
 
+This script is provided under the [MIT License](LICENSE).
 
 ---
