@@ -1,15 +1,14 @@
+import asyncio
 import smtplib
 import time
-import os
-import asyncio
-import aiohttp
-import pandas as pd
-import base64
-from bs4 import BeautifulSoup
 from datetime import datetime
 from email.mime.text import MIMEText
-import io
-import sched
+
+import aiohttp
+import pandas as pd
+import schedule
+from bs4 import BeautifulSoup
+
 
 async def fetch_page(session, page_number):
     max_retries = 3  # Define the maximum number of retries
@@ -28,35 +27,36 @@ async def fetch_page(session, page_number):
             print("Retrying request...")
         await asyncio.sleep(5)  # sleep for 5 seconds
 
-    return None  
+    return None
 
 
-async def scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs):
+async def scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments,
+                      loan_durations, product_titles, product_hrefs):
     if page_content is None:
         return
 
     soup = BeautifulSoup(page_content, 'html.parser')
     product_items = soup.find_all('div', class_='MPProductItem')
-    
+
     for item in product_items:
         discount_percentage = item.find('div', class_='MPProductItem-Discount')
         if discount_percentage:
             discount_percentage = discount_percentage.text.strip().replace('%', '').replace('-', '')
         else:
             discount_percentage = '0'
-        
+
         discounted_price = item.find('span', class_='MPPrice-RetailPrice')
         if discounted_price:
             discounted_price = discounted_price.text.strip().replace('₼', '').replace(' ', '')
-        else:   
+        else:
             discounted_price = '0'
-        
+
         real_price = item.find('span', class_='MPPrice-OldPrice')
         if real_price:
             real_price = real_price.text.strip().replace('₼', '').replace(' ', '')
         else:
             real_price = '0'
-        
+
         loan_condition_element = item.find('div', class_='MPInstallment')
         if loan_condition_element:
             loan_condition = loan_condition_element.text.strip()
@@ -65,11 +65,11 @@ async def scrape_page(page_content, discount_percentages, discounted_prices, rea
         else:
             monthly_payment = '0'
             loan_duration = '0'
-        
+
         product_title = item.find('span', class_='MPTitle')
         if product_title:
             product_title = product_title.text.strip()
-        
+
         product_href = item.find('a', href=True)['href']
 
         discount_percentages.append(float(discount_percentage))
@@ -80,7 +80,9 @@ async def scrape_page(page_content, discount_percentages, discounted_prices, rea
         product_titles.append(product_title)
         product_hrefs.append(f"umico.az{product_href}")
 
+
 df = None
+
 
 async def main():
     discount_percentages = []
@@ -92,23 +94,23 @@ async def main():
     product_hrefs = []
 
     tasks = []
-   
+
     headers = {
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
-            'Dnt': '1',
-            'Origin': 'https://umico.az',
-            'Referer': 'https://umico.az/',
-            'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
-            'Sec-Ch-Ua-Mobile': '?0',
-            'Sec-Ch-Ua-Platform': '"Windows"',
-            'Sec-Fetch-Dest': 'empty',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Site': 'cross-site',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
-        }
-    async with aiohttp.ClientSession(trust_env=True,headers=headers) as session:
+        'Accept': '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8,ru;q=0.7,az;q=0.6',
+        'Dnt': '1',
+        'Origin': 'https://umico.az',
+        'Referer': 'https://umico.az/',
+        'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
+    }
+    async with aiohttp.ClientSession(trust_env=True, headers=headers) as session:
         for page_number in range(1, 5):
             task = asyncio.create_task(fetch_page(session, page_number))
             tasks.append(task)
@@ -116,7 +118,8 @@ async def main():
         page_contents = await asyncio.gather(*tasks)
 
         for page_content in page_contents:
-            await scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments, loan_durations, product_titles, product_hrefs)
+            await scrape_page(page_content, discount_percentages, discounted_prices, real_prices, monthly_payments,
+                              loan_durations, product_titles, product_hrefs)
 
     data = {
         'product_name': product_titles,
@@ -127,7 +130,7 @@ async def main():
         'loan_duration': loan_durations,
         'product_link': product_hrefs
     }
-    
+
     global df
     df = pd.DataFrame(data)
     print(df)
@@ -135,9 +138,9 @@ async def main():
     # Create an email message
     MY_EMAIL = "ismetsemedov@gmail.com"
     MY_PASSWORD = "lmjareknmmweotsp"
-    TO_EMAIL = "ismetsemedov@gmail.com,ismetsemedli@mail.ru"
+    TO_EMAIL = "ismetsemedli@mail.ru,Abdiyev-mubariz@mail.ru,kamalkhalilov7@gmail.com"
     current_date = datetime.now().strftime("%d.%m.%Y")
-    subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
+    subject = "🔥🔥🔥Discounts " + current_date + "🔥🔥🔥"
     recipient_emails = TO_EMAIL.split(',')
     for recipient_email in recipient_emails:
         try:
@@ -156,37 +159,12 @@ async def main():
             print(f"An error occurred while sending the email to {recipient_email}: {str(e)}")
 
 
-## for every three minute
-# s = sched.scheduler(time.time, time.sleep)
-# def run_and_reschedule(sc):
-#     asyncio.run(main())
-#     # Schedule the function to run again in 3 minutes (180 seconds)
-#     s.enter(180, 1, run_and_reschedule, (sc,))
-# if __name__ == '__main__':
-#     # Schedule the initial run
-#     s.enter(0, 1, run_and_reschedule, (s,))
-#     # Run the scheduler
-#     s.run()
-
-
-## Schedule the job to run at 10:00 AM every day
-# def job():
-#     asyncio.run(main())
-
-# if __name__ == '__main__':
-#     # Schedule the job to run at 10:00 AM every day
-#     schedule.every().day.at("10:00").do(job)
-
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
-
-# # Schedule the job to run every 10 hours
 def job():
     asyncio.run(main())
 
+
 if __name__ == '__main__':
-    schedule.every(10).hours.do(job)
+    schedule.every().day.at("09:00").do(job)
 
     while True:
         schedule.run_pending()
