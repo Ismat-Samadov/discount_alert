@@ -63,9 +63,4 @@ You can customize this script for different websites and data types by modifying
 - Be cautious with your Gmail email and password. Use app-specific passwords if possible.
 - Consider using a dedicated Gmail account for sending notifications.
 - Make sure to comply with website terms of service and scraping policies.
-
-## License
-
-This script is provided under the [MIT License](LICENSE).
-
 ---
