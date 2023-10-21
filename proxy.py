@@ -154,9 +154,9 @@ async def main():
     table_html = df.to_html(index=False)
     
     # Create an email message
-    MY_EMAIL = "ismetsemedov@gmail.com"
-    MY_PASSWORD = "lmjareknmmweotsp"
-    TO_EMAIL = "ismetsemedov@gmail.com,ismetsemedli@mail.ru"
+    MY_EMAIL = "MY_EMAIL"
+    MY_PASSWORD = "MY_PASSWORD"
+    TO_EMAIL = "TO_EMAIL@gmail.com,TO_EMAIL@mail.ru"
     current_date = datetime.now().strftime("%d.%m.%Y")
     subject = "🔥🔥🔥Discounts "  + current_date + "🔥🔥🔥"
     recipient_emails = TO_EMAIL.split(',')
