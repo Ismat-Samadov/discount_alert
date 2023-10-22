@@ -164,7 +164,7 @@ def job():
 
 
 if __name__ == '__main__':
-    schedule.every().day.at("09:00").do(job)
+    schedule.every().day.at("04:45").do(job)
 
     while True:
         schedule.run_pending()
